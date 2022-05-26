@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "227155469429",
+    "project_id": "bulletinboard-7ded3",
+    "storage_bucket": "bulletinboard-7ded3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227155469429:android:0d5c8c0175dfd39ac9443c",
+        "android_client_info": {
+          "package_name": "com.khalid.bulletinboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227155469429-h7mepcbdv8mrf7porgg022ihlk026hf0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgbTVs8GJ9S-shC0xSad5gxG2g2lVBbgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227155469429-h7mepcbdv8mrf7porgg022ihlk026hf0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
