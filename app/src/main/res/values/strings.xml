@@ -26,6 +26,8 @@
     <string name="send_verification_error">Не удалось отправить сообщение для векрификации почты.</string>
     <string name="sign_in_error">Не удалось войти</string>
     <string name="sign_in_done">Вы успешно зашли</string>
+    <string name="reset_message">We sent you email for reset your pass</string>
+    <string name="dialog_message">Пожалйста введите ваш корертный аддрес</string>
 
 
 </resources>
