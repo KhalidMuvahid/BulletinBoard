@@ -1,15 +1,17 @@
 package com.khalid.bulletinboard.accounthelper
 
 
+import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.auth.*
 import com.khalid.bulletinboard.MainActivity
 import com.khalid.bulletinboard.R
+import com.khalid.bulletinboard.constants.FirebaseAuthConst
+
 const val REQUEST_SIGN_IN_CODE = 132
 class AccountHelper(activity: MainActivity) {
     val activity = activity
@@ -23,6 +25,22 @@ class AccountHelper(activity: MainActivity) {
                     activity.navHeaderUpdate(task.result?.user)
                 }else{
                     Toast.makeText(activity,activity.resources.getString(R.string.sign_up_error),Toast.LENGTH_SHORT).show()
+                    Log.i("MyLog","${task.exception}")
+                    if(task.exception is FirebaseAuthUserCollisionException){
+                        var exception = task.exception as FirebaseAuthUserCollisionException
+                        if(exception.errorCode == FirebaseAuthConst.ERROR_EMAIL_ALREADY_IN_USE){
+                            Toast.makeText(activity,"Этот аккаунт уже зарегистрирован",Toast.LENGTH_LONG).show()
+                        }
+                    }else if(task.exception is FirebaseAuthInvalidCredentialsException){
+                        var exception = task.exception as FirebaseAuthInvalidCredentialsException
+                        Log.i("MyLog","${exception.errorCode}")
+                        if(exception.errorCode == FirebaseAuthConst.ERROR_INVALID_EMAIL){
+                            Toast.makeText(activity,"Введен не правильный аддрес электроной почты",Toast.LENGTH_LONG).show()
+                        }else if (exception.errorCode == FirebaseAuthConst.ERROR_WEAK_PASSWORD){
+                            Toast.makeText(activity,"Пароль не должен быть меньше 6 символов",Toast.LENGTH_LONG).show()
+                        }
+                    }
+
                 }
 
             }
@@ -37,6 +55,22 @@ class AccountHelper(activity: MainActivity) {
                     activity.navHeaderUpdate(task.result?.user)
                 }else{
                     Toast.makeText(activity,activity.resources.getString(R.string.sign_in_error),Toast.LENGTH_SHORT).show()
+                    Log.i("MyLog","${task.exception}")
+                    if(task.exception is FirebaseAuthInvalidCredentialsException){
+                        var exception = task.exception as FirebaseAuthInvalidCredentialsException
+                        Log.i("MyLog","${exception.errorCode}")
+                        if(exception.errorCode == FirebaseAuthConst.ERROR_INVALID_EMAIL){
+                            Toast.makeText(activity,"Введен не правильный аддрес электроной почты",Toast.LENGTH_LONG).show()
+                        }else if(exception.errorCode == FirebaseAuthConst.ERROR_WRONG_PASSWORD){
+                            Toast.makeText(activity,"Введен не правильный пароль",Toast.LENGTH_LONG).show()
+                        }
+                    }else if(task.exception is FirebaseAuthInvalidUserException){
+                        var exception = task.exception as FirebaseAuthInvalidUserException
+                        Log.i("MyLog","${exception.errorCode}")
+                        if(exception.errorCode == FirebaseAuthConst.ERROR_USER_NOT_FOUND){
+                            Toast.makeText(activity,"Пользователь с данными параметрами не был найден",Toast.LENGTH_LONG).show()
+                        }
+                    }
                 }
 
             }
