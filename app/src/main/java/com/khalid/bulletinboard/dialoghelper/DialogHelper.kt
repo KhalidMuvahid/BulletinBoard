@@ -10,7 +10,7 @@ import com.khalid.bulletinboard.databinding.SignDialogBinding
 
 class DialogHelper(activity:MainActivity) {
     private val activity = activity
-    private val accountHelper = AccountHelper(activity)
+    val accountHelper = AccountHelper(activity)
 
     fun createSignDialog(state:Int){
         val builder = AlertDialog.Builder(activity)
@@ -28,6 +28,10 @@ class DialogHelper(activity:MainActivity) {
 
         binding.btForget.setOnClickListener {
             setOnClickResetPassword(binding,activity,dialog)
+        }
+
+        binding.btGoogleSignIn.setOnClickListener {
+            accountHelper.signInWithGoogle()
         }
 
 

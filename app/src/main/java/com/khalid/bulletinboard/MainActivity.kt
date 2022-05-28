@@ -1,7 +1,9 @@
 package com.khalid.bulletinboard
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -9,12 +11,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.khalid.bulletinboard.accounthelper.REQUEST_SIGN_IN_CODE
 import com.khalid.bulletinboard.databinding.ActivityMainBinding
 import com.khalid.bulletinboard.dialoghelper.DialogConst
 import com.khalid.bulletinboard.dialoghelper.DialogHelper
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
 
@@ -38,6 +44,22 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         binding.navView.setNavigationItemSelectedListener(this)
         tvEmailNavHeader = binding.navView.getHeaderView(0).findViewById(R.id.tvEmailNavHeader)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_SIGN_IN_CODE){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)
+                if (account != null){
+                    dialogHelper.accountHelper.signInFireBaseWithGoogle(account.idToken!!)
+                }
+            }catch (e:ApiException){
+                Log.d("MyLog","exception ${e.message}",)
+            }
+
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
