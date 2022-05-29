@@ -32,6 +32,7 @@ class DialogHelper(activity:MainActivity) {
 
         binding.btGoogleSignIn.setOnClickListener {
             accountHelper.signInWithGoogle()
+            dialog.dismiss()
         }
 
 

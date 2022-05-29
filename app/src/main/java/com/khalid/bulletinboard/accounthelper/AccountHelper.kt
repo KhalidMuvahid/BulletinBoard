@@ -91,12 +91,16 @@ class AccountHelper(activity: MainActivity) {
         activity.startActivityForResult(intent,REQUEST_SIGN_IN_CODE)
     }
 
+    fun signOutGoogle(){
+        getSignInClient().signOut()
+    }
+
     fun signInFireBaseWithGoogle(token:String){
         val credential = GoogleAuthProvider.getCredential(token,null)
         activity.mAuth.signInWithCredential(credential).addOnCompleteListener {task->
+            activity.navHeaderUpdate(task.result?.user)
             if (task.isSuccessful){
-                activity.navHeaderUpdate(task.result?.user)
-                Toast.makeText(activity,"Sign in done",Toast.LENGTH_LONG).show()
+                Toast.makeText(activity,"Sign in done ${task.result?.user}",Toast.LENGTH_LONG).show()
             }
         }
     }

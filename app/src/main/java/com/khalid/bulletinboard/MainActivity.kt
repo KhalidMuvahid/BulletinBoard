@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -17,6 +18,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.khalid.bulletinboard.accounthelper.REQUEST_SIGN_IN_CODE
+import com.khalid.bulletinboard.act.EditAdsAct
 import com.khalid.bulletinboard.databinding.ActivityMainBinding
 import com.khalid.bulletinboard.dialoghelper.DialogConst
 import com.khalid.bulletinboard.dialoghelper.DialogHelper
@@ -44,6 +46,19 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
         binding.navView.setNavigationItemSelectedListener(this)
         tvEmailNavHeader = binding.navView.getHeaderView(0).findViewById(R.id.tvEmailNavHeader)
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu,menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.new_ads){
+            var intent = Intent(this,EditAdsAct::class.java)
+            startActivity(intent)
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -79,6 +94,7 @@ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelected
                 Toast.makeText(this,"out",Toast.LENGTH_SHORT).show()
                 navHeaderUpdate(null)
                 mAuth.signOut()
+                dialogHelper.accountHelper.signOutGoogle()
             }
             else -> Toast.makeText(this,"Null",Toast.LENGTH_SHORT).show()
         }
