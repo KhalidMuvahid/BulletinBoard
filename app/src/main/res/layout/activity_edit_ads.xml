@@ -28,15 +28,6 @@
 
             </androidx.viewpager2.widget.ViewPager2>
 
-            <SearchView
-                android:id="@+id/schCountry"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <Spinner
-                android:id="@+id/spCountry"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

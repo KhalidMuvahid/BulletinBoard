@@ -4,6 +4,8 @@ import android.content.Context
 import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
+import java.util.*
+import kotlin.collections.ArrayList
 
 object CountryCityHelper {
 
@@ -25,16 +27,25 @@ object CountryCityHelper {
                     tempArray.add(countryNames.getString(n))
                 }
             }
-
-
-
-
-
-
         }catch (e:IOException){
 
         }
 
         return tempArray
+    }
+
+    fun filterListData(list:ArrayList<String>,search:String):ArrayList<String>{
+        var tempArray = ArrayList<String>()
+        tempArray.clear()
+        for (s: String in list) {
+            if (s.toLowerCase(Locale.ROOT).startsWith(search.toLowerCase(Locale.ROOT))) {
+                tempArray.add(s)
+            }
+        }
+        if (tempArray.size == 0){
+            tempArray.add("No result")
+        }
+        return tempArray
+
     }
 }

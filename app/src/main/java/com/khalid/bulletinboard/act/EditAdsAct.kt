@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import com.khalid.bulletinboard.R
 import com.khalid.bulletinboard.databinding.ActivityEditAdsBinding
 import com.khalid.bulletinboard.databinding.SignDialogBinding
+import com.khalid.bulletinboard.dialogs.CountryDialogHelper
 import com.khalid.bulletinboard.utils.CountryCityHelper
 
 class EditAdsAct : AppCompatActivity() {
@@ -17,10 +18,8 @@ class EditAdsAct : AppCompatActivity() {
         binding = ActivityEditAdsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = ArrayAdapter(this,android.R.layout.simple_spinner_item,CountryCityHelper.getAllCountries(this))
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        CountryDialogHelper().setCountryDialog(this,CountryCityHelper.getAllCountries(this))
 
-        binding.spCountry.adapter = adapter
 
 
     }
