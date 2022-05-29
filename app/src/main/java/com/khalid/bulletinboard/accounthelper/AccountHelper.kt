@@ -8,6 +8,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider
 import com.khalid.bulletinboard.MainActivity
 import com.khalid.bulletinboard.R
 import com.khalid.bulletinboard.constants.FirebaseAuthConst
@@ -30,6 +31,7 @@ class AccountHelper(activity: MainActivity) {
                         var exception = task.exception as FirebaseAuthUserCollisionException
                         if(exception.errorCode == FirebaseAuthConst.ERROR_EMAIL_ALREADY_IN_USE){
                             Toast.makeText(activity,"Этот аккаунт уже зарегистрирован",Toast.LENGTH_LONG).show()
+                            linkEmToGm(email,password)
                         }
                     }else if(task.exception is FirebaseAuthInvalidCredentialsException){
                         var exception = task.exception as FirebaseAuthInvalidCredentialsException
@@ -106,6 +108,16 @@ class AccountHelper(activity: MainActivity) {
             }else{
                 Toast.makeText(activity,activity.resources.getString(R.string.send_verification_error),Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun linkEmToGm(email: String,password: String){
+        var credential = EmailAuthProvider.getCredential(email,password)
+        activity.mAuth.currentUser?.linkWithCredential(credential)?.addOnCompleteListener {task->
+            if (task.isSuccessful){
+                Toast.makeText(activity,activity.resources.getString(R.string.link_done),Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 }
