@@ -29,6 +29,8 @@
     <string name="reset_message">We sent you email for reset your pass</string>
     <string name="dialog_message">Пожалйста введите ваш корертный аддрес</string>
     <string name="link_done">Email был успешно присоеде </string>
+    <string name="choose_country_text">*Выберите страну пожалуйста</string>
+    <string name="choose_city_text">*Выберите город пожалуйста</string>
 
 
 </resources>
