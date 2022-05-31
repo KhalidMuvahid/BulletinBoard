@@ -31,6 +31,8 @@
     <string name="link_done">Email был успешно присоеде </string>
     <string name="choose_country_text">*Выберите страну пожалуйста</string>
     <string name="choose_city_text">*Выберите город пожалуйста</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
