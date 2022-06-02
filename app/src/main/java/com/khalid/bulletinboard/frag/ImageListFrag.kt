@@ -8,9 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.khalid.bulletinboard.R
+import com.khalid.bulletinboard.utils.ItemTouchMoveCallback
 import io.ak1.pix.helpers.PixBus
 import io.ak1.pix.helpers.PixEventCallback
 import kotlinx.coroutines.coroutineScope
@@ -20,7 +22,8 @@ const val TAG = "Tag"
 class ImageListFrag(var frgClose:FragmentClose,var selectedImageData:List<SelectedImageData>):Fragment() {
 
     var adapter = SelectedImageAdapter()
-
+    val dragCallback = ItemTouchMoveCallback(adapter)
+    val touchHelper = ItemTouchHelper(dragCallback)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +40,7 @@ class ImageListFrag(var frgClose:FragmentClose,var selectedImageData:List<Select
         var backbutton:Button = view.findViewById(R.id.bBack)
 
         var recycler = view.findViewById<RecyclerView>(R.id.slectedImRecycler)
+        touchHelper.attachToRecyclerView(recycler)
         recycler.layoutManager = LinearLayoutManager(activity)
         adapter.updateAdapter(selectedImageData)
         recycler.adapter=adapter
