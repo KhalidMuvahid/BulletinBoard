@@ -1,27 +1,30 @@
 package com.khalid.bulletinboard.act
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import com.khalid.bulletinboard.R
+import com.khalid.bulletinboard.adapters.EditViewPagerAdapter
 import com.khalid.bulletinboard.databinding.ActivityEditAdsBinding
 import com.khalid.bulletinboard.dialogs.CountryDialogHelper
 import com.khalid.bulletinboard.frag.FragmentClose
-import com.khalid.bulletinboard.frag.ImageListFrag
+import com.khalid.bulletinboard.frag.ListImageFragment
+import com.khalid.bulletinboard.frag.SelectedImageData
 import com.khalid.bulletinboard.utils.CountryCityHelper
 import com.khalid.bulletinboard.utils.ImagePicker
-import com.khalid.bulletinboard.utils.PICK_IMAGE_CODE
+import io.ak1.pix.helpers.PixBus
+import io.ak1.pix.helpers.PixEventCallback
+
+class EditAdsAct : AppCompatActivity(), FragmentClose {
 
 
-
-class EditAdsAct : AppCompatActivity(),FragmentClose {
-
+    var chooseImageFrag:ListImageFragment? = null
     private lateinit var binding: ActivityEditAdsBinding
     lateinit var countryChooser: TextView
+    lateinit var editViewPagerAdapter: EditViewPagerAdapter
     lateinit var countryDialogHelper:CountryDialogHelper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +32,8 @@ class EditAdsAct : AppCompatActivity(),FragmentClose {
         setContentView(binding.root)
         countryChooser = binding.tvChooseCountry
         countryDialogHelper = CountryDialogHelper()
-
+        editViewPagerAdapter = EditViewPagerAdapter()
+        binding.vpImg.adapter = editViewPagerAdapter
 
     }
 
@@ -48,29 +52,24 @@ class EditAdsAct : AppCompatActivity(),FragmentClose {
     }
 
     fun onSelectEditViewPager(view: View) {
-        ImagePicker.getImage(this,5,this)
-        binding.svEditAds.visibility=View.GONE
-//        supportFragmentManager.beginTransaction().add(R.id.edit_frame_container,ImageListFrag(this)).commit()
-    }
-
-
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == PICK_IMAGE_CODE && resultCode == RESULT_OK){
-            if (data!!.clipData != null){
-                        for (i in 0 until data.clipData!!.itemCount){
-                            var imgUri = data.clipData!!.getItemAt(i).uri
-                            Toast.makeText(this,"suc: $imgUri",Toast.LENGTH_SHORT).show()
-                        }
-            }else {
-                        var imgUri = data.data
-                        Toast.makeText(this,"suc: $imgUri",Toast.LENGTH_SHORT).show() }
+        ImagePicker.getImage(this,3)
+        PixBus.results {
+            when(it.status){
+                PixEventCallback.Status.SUCCESS -> {
+                    binding.svEditAds.visibility=View.GONE
+                    if(chooseImageFrag == null){
+                        chooseImageFrag = ListImageFragment(this,it.data)
+                        supportFragmentManager.beginTransaction().replace(R.id.edit_frame_container,chooseImageFrag!!).commit()
+                    }
+                }
+            }
         }
+
     }
 
-    override fun onClose() {
-        binding.svEditAds.visibility=View.VISIBLE
+    override fun onFrgClose(newList: List<SelectedImageData>) {
+        binding.svEditAds.visibility= View.VISIBLE
+        editViewPagerAdapter.updateAdapter(newList)
+        chooseImageFrag = null
     }
 }
